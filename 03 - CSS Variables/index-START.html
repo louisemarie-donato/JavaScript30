@@ -25,6 +25,21 @@
     /*
       misc styles, nothing to do with CSS variables
     */
+    :root {
+      --base: #ffc600;
+      --blur: 10px;
+      --spacing: 10px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
 
     body {
       text-align: center;
@@ -45,7 +60,17 @@
   </style>
 
   <script>
-  </script>
+    // get control inputs
+    const inputs = [...document.querySelectorAll('.controls input')];
 
+    // update input value into the css variables
+    function updateInputValue() {
+      const inputValue = isNaN(this.value) ? this.value : `${this.value}px`;
+      document.documentElement.style.setProperty(`--${this.name}`, inputValue);
+    }
+
+    inputs.forEach(input => input.addEventListener('change', updateInputValue));
+    inputs.forEach(input => input.addEventListener('mousemove', updateInputValue));
+  </script>      
 </body>
 </html>
