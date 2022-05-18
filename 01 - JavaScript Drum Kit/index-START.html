@@ -61,7 +61,7 @@
   function playSound(e) {
     // get audio and key elements
     const sound = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
 
     // check if sound & key elements are the same
     if (sound && key) {
