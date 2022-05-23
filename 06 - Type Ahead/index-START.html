@@ -15,8 +15,56 @@
     </ul>
   </form>
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+  const cities = [];
+  const result = document.querySelector('.suggestions');
+  const input = document.querySelector('.search');
+
+  // get data from endpoint
+  async function fetchData() {
+    let response = await fetch(endpoint);
+    let data = await response.json();
+    return data;
+  }
+  fetchData().then(data => cities.push(...data));
+  
+  // format population number
+  function formatPopulationNumber(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  // search for match
+  function searchMatch(cityToMatch, cities) {
+    return cities.filter(place => {
+      const regex = new RegExp(cityToMatch, 'gi');
+      return place.city.match(regex) || place.state.match(regex);
+    })
+  }
+
+  // display match
+  function displayMatch() {
+    // search
+    const matchedCities = searchMatch(this.value, cities);
+    
+    const displayCities = matchedCities.map(place => {
+        const regex = new RegExp(this.value, 'gi');
+        // match letter/word from search input and highlight
+        const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+        // return full list item
+        return `
+          <li>
+            <span class="name">${cityName}, ${stateName}</span>
+            <span class="population">${formatPopulationNumber(place.population)}</span>
+        `;
+      }
+    ).join('');
+    // push to html
+    result.innerHTML = displayCities;
+  }
+
+  input.addEventListener('keyup', displayMatch);
 </script>
 </body>
 </html>
