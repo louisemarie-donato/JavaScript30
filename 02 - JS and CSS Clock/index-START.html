@@ -4,19 +4,7 @@
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
 </head>
-<body>
-
-
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
-    </div>
-
-
-  <style>
+<style>
     html {
       background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
       background-size: cover;
@@ -62,13 +50,46 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
     }
 
   </style>
+<body>
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
 
   <script>
+    // get hand elements
+    const hourHand = document.querySelector('.hour-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const secondHand = document.querySelector('.second-hand');
 
+    function getTime() {
+      // get date time
+      const timeNow = new Date();
+      const hour = timeNow.getHours();
+      const minutes = timeNow.getMinutes();
+      const seconds = timeNow.getSeconds();
 
+      setTime(hourHand, hour, 12);
+      setTime(minuteHand, minutes, 60);
+      setTime(secondHand, seconds, 60);
+    }
+
+    // adjust hand element according to js time
+    function setTime(clockHand, currentTime, timeConversion) {
+      clockHand.style.transform = `rotate(${(currentTime / timeConversion) * 360 + 90}deg)`;
+    }
+
+    setInterval(getTime,1000);
+    getTime();
   </script>
 </body>
 </html>
