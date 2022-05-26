@@ -58,6 +58,23 @@
       };
     }
 
+    const pictures = [...document.querySelectorAll('.slide-in')];
+
+    function fadeInPicture() {
+      pictures.forEach(picture => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        // slide in halfway through image
+        const slideInHalfway = scrollPosition - picture.height / 2;
+        const imageBottom = picture.offsetTop + picture.height;
+
+        const isHalfway = slideInHalfway > picture.offsetTop;
+        const isNotScrolledPast = window.scrollY < imageBottom;
+
+        (isHalfway && isNotScrolledPast) ? picture.classList.add('active') : picture.classList.remove('active');
+      });
+    }
+
+    window.addEventListener("scroll", debounce(fadeInPicture));
   </script>
 
   <style>
