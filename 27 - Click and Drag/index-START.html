@@ -34,8 +34,36 @@
     <div class="item item25">25</div>
   </div>
 
-<script>
-</script>
+  <script>
+    const slider = document.querySelector('.items');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    function startSlideEvent(e) {
+      isDown = true;
+      slider.classList.add('active');
+      startX = e.clientX;
+      scrollLeft = slider.scrollLeft;
+    }
+
+    function moveSlider(e) {
+      if(!isDown) return;
+      e.preventDefault();
+      const moveSliderPixels = (startX - e.clientX) * 3;
+      slider.scrollLeft = scrollLeft + moveSliderPixels;
+    }
+
+    function removeDragEvent() {
+      isDown = false;
+      slider.classList.remove('active');
+    }
+    
+    slider.addEventListener('mousedown', startSlideEvent)
+    slider.addEventListener('mousemove', moveSlider);
+    slider.addEventListener('mouseup', removeDragEvent)
+    slider.addEventListener('mouseleave',removeDragEvent)
+  </script>
 
   </body>
 </html>
